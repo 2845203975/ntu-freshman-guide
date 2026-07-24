@@ -175,21 +175,21 @@ footer{text-align:center;color:var(--sub);font-size:12px;padding:26px 16px 110px
 @media(min-width:700px){.hero h1{font-size:36px}}
 
 /* ===== 强制解锁门禁 ===== */
-.gate{position:fixed;top:0;left:0;right:0;z-index:501;display:flex;justify-content:center;padding:10px 14px 0;pointer-events:none}
-.gate-inner{width:100%;max-width:360px;background:#fff;border-radius:20px;padding:16px 18px 14px;text-align:center;box-shadow:0 16px 44px rgba(0,0,0,.45);margin:0 auto;pointer-events:auto}
-.gate-inner .lock{font-size:28px}
-.gate-inner h2{font-size:18px;margin:4px 0 2px}
-.gate-inner .g-sub{font-size:12.5px;color:var(--sub);line-height:1.55}
-.gate-qr{width:140px;height:140px;margin:8px auto 4px;border-radius:12px;border:1.5px solid var(--line);padding:5px;background:#fff;box-shadow:0 6px 18px rgba(23,60,140,.15);display:block}
-.gate-steps{text-align:left;background:#f7f9ff;border-radius:10px;padding:7px 11px;font-size:11.5px;color:#38415a;margin:6px 0;line-height:1.65}
-.gate-wx{display:flex;align-items:center;gap:8px;background:var(--sky);border-radius:10px;padding:8px 11px;margin:8px 0}
-.gate-wx b{flex:1;text-align:left;font-size:15px;color:var(--deep);letter-spacing:.5px}
-.gate-wx button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:6px 11px;font-weight:700;cursor:pointer;font-size:12px}
-.gate-code-row{display:flex;gap:8px;margin-top:8px}
-.gate-code-row input{flex:1;border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;font-size:13.5px;outline:none;text-align:center;letter-spacing:2px}
+.gate{position:fixed;top:0;left:0;right:0;z-index:501;display:flex;justify-content:center;padding:12px 16px 0;pointer-events:none;max-height:100vh;overflow-y:auto}
+.gate-inner{width:100%;max-width:380px;background:#fff;border-radius:22px;padding:20px 20px 18px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.4);margin:0 auto;pointer-events:auto}
+.gate-inner .lock{font-size:34px}
+.gate-inner h2{font-size:20px;margin:6px 0 2px}
+.gate-inner .g-sub{font-size:13px;color:var(--sub);line-height:1.6}
+.gate-qr{width:170px;height:170px;margin:10px auto 6px;border-radius:14px;border:1.5px solid var(--line);padding:6px;background:#fff;box-shadow:0 6px 20px rgba(23,60,140,.15);display:block}
+.gate-steps{text-align:left;background:#f7f9ff;border-radius:10px;padding:8px 12px;font-size:12px;color:#38415a;margin:8px 0;line-height:1.7}
+.gate-wx{display:flex;align-items:center;gap:8px;background:var(--sky);border-radius:12px;padding:9px 12px;margin:10px 0}
+.gate-wx b{flex:1;text-align:left;font-size:16px;color:var(--deep);letter-spacing:.5px}
+.gate-wx button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer;font-size:12.5px}
+.gate-code-row{display:flex;gap:8px;margin-top:10px}
+.gate-code-row input{flex:1;border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;font-size:14px;outline:none;text-align:center;letter-spacing:2px}
 .gate-code-row input:focus{border-color:var(--blue)}
-.gate-code-row button{background:var(--blue);color:#fff;border:none;border-radius:10px;padding:0 14px;font-weight:700;cursor:pointer;font-size:13px}
-.gate-divider{font-size:11px;color:#9aa3b8;margin-top:10px}
+.gate-code-row button{background:var(--blue);color:#fff;border:none;border-radius:12px;padding:0 16px;font-weight:700;cursor:pointer;font-size:13.5px}
+.gate-divider{font-size:11.5px;color:#9aa3b8;margin-top:12px}
 .shake{animation:shake .35s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 
@@ -205,10 +205,13 @@ footer{text-align:center;color:var(--sub);font-size:12px;padding:26px 16px 110px
 .sheet .qr-mini{width:170px;height:170px;border-radius:14px;border:1.5px solid var(--line);padding:6px;margin:12px auto 2px;display:block;background:#fff}
 
 /* ===== 门禁预览模糊 ===== */
-.gate-backdrop{position:fixed;inset:0;z-index:500;background:linear-gradient(180deg,rgba(14,32,80,0.72) 0%,rgba(14,32,80,0.12) 12%,rgba(10,24,60,0.03) 25%,transparent 40%,transparent 80%,rgba(8,18,50,0.08) 100%);pointer-events:none}
-body.gate-active{overflow-y:auto;touch-action:auto;overscroll-behavior:none}
-body.gate-active > *:not(#gate):not(.gate-backdrop):not(#toast):not(.gate-preview-label){filter:blur(2px);pointer-events:none;user-select:none}
-.gate-preview-label{position:fixed;bottom:0;left:0;right:0;z-index:501;text-align:center;color:rgba(255,255,255,.45);font-size:11px;padding:6px 10px 8px;background:linear-gradient(0deg,rgba(8,18,50,0.5),transparent);pointer-events:none;letter-spacing:.5px}
+.gate-backdrop{position:fixed;inset:0;z-index:500;background:linear-gradient(180deg,rgba(18,42,100,0.78) 0%,rgba(18,42,100,0.3) 20%,rgba(12,30,80,0.1) 45%,rgba(8,20,60,0.02) 100%);pointer-events:none}
+body.gate-active > *:not(#gate):not(.gate-backdrop):not(#toast):not(.gate-back){filter:blur(2px);pointer-events:none;user-select:none}
+.gate-hint{text-align:center;color:rgba(255,255,255,.6);font-size:12px;padding:8px 0 14px;pointer-events:none;animation:hintBounce 2s infinite}
+@keyframes hintBounce{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(5px);opacity:1}}
+.gate-back{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:502;background:linear-gradient(135deg,var(--yellow),var(--orange));color:#5a2d00;border:none;border-radius:999px;padding:11px 22px;font-weight:800;font-size:13.5px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.3);display:none}
+.gate-back.show{display:block;animation:gateBackUp .3s ease}
+@keyframes gateBackUp{from{transform:translateX(-50%) translateY(20px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
 </style>
 <script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
 <script>
@@ -259,28 +262,26 @@ body.gate-active > *:not(#gate):not(.gate-backdrop):not(#toast):not(.gate-previe
     </div>
     <div class="gate-divider">🔑 口令只发给已添加的好友 · 加好友秒通过，资料包同发</div>
   </div>
+  <div class="gate-hint">↓ 向下滚动预览内容 ↓</div>
 </div>
-<div class="gate-preview-label">✨ 内容自动预览中 · 添加好友解锁即可完整浏览 ✨</div>
+<button class="gate-back" id="gateBack" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 回到顶部解锁</button>
 <script>
 /* 已解锁用户直接隐藏门禁，避免闪烁 */
-try{ if(localStorage.getItem("ntu_unlocked")==="1"){ var g=document.getElementById("gate"); if(g) g.style.display="none"; var gb=document.getElementById("gateBackdrop"); if(gb) gb.style.display="none"; var gl=document.querySelector(".gate-preview-label"); if(gl) gl.style.display="none"; }
+try{ if(localStorage.getItem("ntu_unlocked")==="1"){ var g=document.getElementById("gate"); if(g) g.style.display="none"; var gb=document.getElementById("gateBackdrop"); if(gb) gb.style.display="none"; var bk=document.getElementById("gateBack"); if(bk) bk.style.display="none"; }
 else{
   document.body.classList.add("gate-active");
   /* —— 自动滚动预览（用户手动滑时暂停，3秒后恢复） —— */
-  var _gateRAF=null, _gatePos=380, _gateSpeed=0.35, _gatePaused=false, _gatePauseTimer=null;
-  /* 起始位置跳过hero，直接展示内容区 */
-  window.scrollTo(0,_gatePos);
+  var _gateRAF=null, _gatePos=0, _gateSpeed=0.4, _gatePaused=false, _gatePauseTimer=null;
   function _gateScroll(){
     if(!_gatePaused){
-      var max=document.documentElement.scrollHeight-window.innerHeight-100;
+      var max=document.documentElement.scrollHeight-window.innerHeight;
       _gatePos+=_gateSpeed;
-      if(_gatePos>=max){ _gatePos=380; }
+      if(_gatePos>=max){ _gatePos=0; }
       window.scrollTo(0,_gatePos);
     }
     _gateRAF=requestAnimationFrame(_gateScroll);
   }
-  setTimeout(function(){ _gateRAF=requestAnimationFrame(_gateScroll); },600);
-  /* 用户手动滚动 → 暂停自动滚动 */
+  setTimeout(function(){ _gateRAF=requestAnimationFrame(_gateScroll); },1000);
   function _gateUserScroll(){
     _gatePaused=true;
     _gatePos=window.scrollY;
@@ -289,12 +290,7 @@ else{
   }
   window.addEventListener("wheel",_gateUserScroll,{passive:true});
   window.addEventListener("touchmove",_gateUserScroll,{passive:true});
-  window.addEventListener("touchend",_gateUserScroll,{passive:true});
-  window._stopGatePreview=function(){
-    if(_gateRAF){ cancelAnimationFrame(_gateRAF); _gateRAF=null; }
-    clearTimeout(_gatePauseTimer);
-    window.scrollTo(0,0);
-  };
+  window._stopGatePreview=function(){ if(_gateRAF){ cancelAnimationFrame(_gateRAF); _gateRAF=null; } clearTimeout(_gatePauseTimer); };
 } }catch(e){}
 </script>
 
@@ -886,11 +882,10 @@ function unlockGate(){
   if(g) g.style.display = "none";
   var gb = document.getElementById("gateBackdrop");
   if(gb) gb.style.display = "none";
-  var gl = document.querySelector(".gate-preview-label");
-  if(gl) gl.style.display = "none";
   document.body.classList.remove("gate-active");
   document.body.style.overflow = "";
-  document.body.style.touchAction = "";
+  var back = document.getElementById("gateBack");
+  if(back) back.classList.remove("show");
   toast("已解锁，宝典全部内容畅览～");
 }
 function unlockByCode(){
@@ -953,12 +948,15 @@ window.addEventListener("scroll", function(){
   var h = document.documentElement;
   var p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
   document.getElementById("progress").style.width = p + "%";
-  if(!document.body.classList.contains("gate-active")){
-    var cur = null;
-    secs.forEach(function(s){ if(s.el.getBoundingClientRect().top < 120) cur = s; });
-    chips.forEach(function(a){ a.classList.remove("active"); });
-    if(cur) cur.a.classList.add("active");
+  var back = document.getElementById("gateBack");
+  if(back && document.body.classList.contains("gate-active")){
+    if(window.scrollY > 250) back.classList.add("show");
+    else back.classList.remove("show");
   }
+  var cur = null;
+  secs.forEach(function(s){ if(s.el.getBoundingClientRect().top < 120) cur = s; });
+  chips.forEach(function(a){ a.classList.remove("active"); });
+  if(cur) cur.a.classList.add("active");
 }, {passive:true});
 
 /* ===== 校区 tabs ===== */
