@@ -205,10 +205,10 @@ footer{text-align:center;color:var(--sub);font-size:12px;padding:26px 16px 110px
 .sheet .qr-mini{width:170px;height:170px;border-radius:14px;border:1.5px solid var(--line);padding:6px;margin:12px auto 2px;display:block;background:#fff}
 
 /* ===== 门禁预览模糊 ===== */
-.gate-backdrop{position:fixed;inset:0;z-index:500;background:linear-gradient(180deg,rgba(14,32,80,0.82) 0%,rgba(14,32,80,0.35) 18%,rgba(10,24,60,0.12) 40%,rgba(8,18,50,0.03) 70%,rgba(8,18,50,0.15) 100%);pointer-events:none}
-body.gate-active{overflow-y:auto;touch-action:none;overscroll-behavior:none}
+.gate-backdrop{position:fixed;inset:0;z-index:500;background:linear-gradient(180deg,rgba(14,32,80,0.72) 0%,rgba(14,32,80,0.12) 12%,rgba(10,24,60,0.03) 25%,transparent 40%,transparent 80%,rgba(8,18,50,0.08) 100%);pointer-events:none}
+body.gate-active{overflow-y:auto;touch-action:auto;overscroll-behavior:none}
 body.gate-active > *:not(#gate):not(.gate-backdrop):not(#toast):not(.gate-preview-label){filter:blur(2px);pointer-events:none;user-select:none}
-.gate-preview-label{position:fixed;bottom:0;left:0;right:0;z-index:501;text-align:center;color:rgba(255,255,255,.5);font-size:11.5px;padding:7px 10px 9px;background:linear-gradient(0deg,rgba(8,18,50,0.6),transparent);pointer-events:none;letter-spacing:.5px}
+.gate-preview-label{position:fixed;bottom:0;left:0;right:0;z-index:501;text-align:center;color:rgba(255,255,255,.45);font-size:11px;padding:6px 10px 8px;background:linear-gradient(0deg,rgba(8,18,50,0.5),transparent);pointer-events:none;letter-spacing:.5px}
 </style>
 <script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
 <script>
@@ -266,21 +266,35 @@ body.gate-active > *:not(#gate):not(.gate-backdrop):not(#toast):not(.gate-previe
 try{ if(localStorage.getItem("ntu_unlocked")==="1"){ var g=document.getElementById("gate"); if(g) g.style.display="none"; var gb=document.getElementById("gateBackdrop"); if(gb) gb.style.display="none"; var gl=document.querySelector(".gate-preview-label"); if(gl) gl.style.display="none"; }
 else{
   document.body.classList.add("gate-active");
-  /* —— 自动滚动预览 —— */
-  var _gateRAF=null, _gatePos=0, _gateSpeed=0.4;
+  /* —— 自动滚动预览（用户手动滑时暂停，3秒后恢复） —— */
+  var _gateRAF=null, _gatePos=380, _gateSpeed=0.35, _gatePaused=false, _gatePauseTimer=null;
+  /* 起始位置跳过hero，直接展示内容区 */
+  window.scrollTo(0,_gatePos);
   function _gateScroll(){
-    var max=document.documentElement.scrollHeight-window.innerHeight;
-    _gatePos+=_gateSpeed;
-    if(_gatePos>=max){ _gatePos=0; }
-    window.scrollTo(0,_gatePos);
+    if(!_gatePaused){
+      var max=document.documentElement.scrollHeight-window.innerHeight-100;
+      _gatePos+=_gateSpeed;
+      if(_gatePos>=max){ _gatePos=380; }
+      window.scrollTo(0,_gatePos);
+    }
     _gateRAF=requestAnimationFrame(_gateScroll);
   }
-  setTimeout(function(){ _gateRAF=requestAnimationFrame(_gateScroll); },800);
-  /* —— 禁止手动滚动 —— */
-  window.addEventListener("wheel",function(e){ if(!e.target.closest("#gate")) e.preventDefault(); },{passive:false});
-  window.addEventListener("touchmove",function(e){ if(!e.target.closest("#gate")) e.preventDefault(); },{passive:false});
-  window.addEventListener("keydown",function(e){ if([32,33,34,35,36,38,40].indexOf(e.keyCode)>-1) e.preventDefault(); },{passive:false});
-  window._stopGatePreview=function(){ if(_gateRAF){ cancelAnimationFrame(_gateRAF); _gateRAF=null; } window.scrollTo(0,0); };
+  setTimeout(function(){ _gateRAF=requestAnimationFrame(_gateScroll); },600);
+  /* 用户手动滚动 → 暂停自动滚动 */
+  function _gateUserScroll(){
+    _gatePaused=true;
+    _gatePos=window.scrollY;
+    clearTimeout(_gatePauseTimer);
+    _gatePauseTimer=setTimeout(function(){ _gatePaused=false; },3000);
+  }
+  window.addEventListener("wheel",_gateUserScroll,{passive:true});
+  window.addEventListener("touchmove",_gateUserScroll,{passive:true});
+  window.addEventListener("touchend",_gateUserScroll,{passive:true});
+  window._stopGatePreview=function(){
+    if(_gateRAF){ cancelAnimationFrame(_gateRAF); _gateRAF=null; }
+    clearTimeout(_gatePauseTimer);
+    window.scrollTo(0,0);
+  };
 } }catch(e){}
 </script>
 
