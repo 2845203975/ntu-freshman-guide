@@ -175,13 +175,13 @@ footer{text-align:center;color:var(--sub);font-size:12px;padding:26px 16px 110px
 @media(min-width:700px){.hero h1{font-size:36px}}
 
 /* ===== 强制解锁门禁 ===== */
-.gate{position:fixed;inset:0;z-index:500;background:linear-gradient(160deg,#1c46a0 0%,#123a8f 45%,#0b2560 100%);display:flex;align-items:center;justify-content:center;padding:18px;overflow-y:auto}
-.gate-inner{width:100%;max-width:400px;background:#fff;border-radius:24px;padding:26px 22px 24px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.4);margin:auto}
+.gate{position:fixed;top:0;left:0;right:0;z-index:501;display:flex;justify-content:center;padding:12px 16px 0;pointer-events:none;max-height:100vh;overflow-y:auto}
+.gate-inner{width:100%;max-width:380px;background:#fff;border-radius:22px;padding:20px 20px 18px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.4);margin:0 auto;pointer-events:auto}
 .gate-inner .lock{font-size:34px}
 .gate-inner h2{font-size:20px;margin:6px 0 2px}
 .gate-inner .g-sub{font-size:13px;color:var(--sub);line-height:1.6}
-.gate-qr{width:230px;height:230px;margin:14px auto 8px;border-radius:16px;border:1.5px solid var(--line);padding:8px;background:#fff;box-shadow:0 8px 24px rgba(23,60,140,.15);display:block}
-.gate-steps{text-align:left;background:#f7f9ff;border-radius:12px;padding:10px 14px;font-size:12.8px;color:#38415a;margin:10px 0;line-height:1.8}
+.gate-qr{width:170px;height:170px;margin:10px auto 6px;border-radius:14px;border:1.5px solid var(--line);padding:6px;background:#fff;box-shadow:0 6px 20px rgba(23,60,140,.15);display:block}
+.gate-steps{text-align:left;background:#f7f9ff;border-radius:10px;padding:8px 12px;font-size:12px;color:#38415a;margin:8px 0;line-height:1.7}
 .gate-wx{display:flex;align-items:center;gap:8px;background:var(--sky);border-radius:12px;padding:9px 12px;margin:10px 0}
 .gate-wx b{flex:1;text-align:left;font-size:16px;color:var(--deep);letter-spacing:.5px}
 .gate-wx button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer;font-size:12.5px}
@@ -203,6 +203,15 @@ footer{text-align:center;color:var(--sub);font-size:12px;padding:26px 16px 110px
 .share-row .sh{background:var(--blue);color:#fff}
 .share-row .cp2{background:#fff;color:var(--deep);border:1.5px solid #c8dcff}
 .sheet .qr-mini{width:170px;height:170px;border-radius:14px;border:1.5px solid var(--line);padding:6px;margin:12px auto 2px;display:block;background:#fff}
+
+/* ===== 门禁预览模糊 ===== */
+.gate-backdrop{position:fixed;inset:0;z-index:500;background:linear-gradient(180deg,rgba(18,42,100,0.88) 0%,rgba(18,42,100,0.55) 30%,rgba(12,30,80,0.25) 60%,rgba(8,20,60,0.06) 100%);pointer-events:none}
+body.gate-active > *:not(#gate):not(.gate-backdrop):not(#toast):not(.gate-back){filter:blur(7px);pointer-events:none;user-select:none}
+.gate-hint{text-align:center;color:rgba(255,255,255,.6);font-size:12px;padding:8px 0 14px;pointer-events:none;animation:hintBounce 2s infinite}
+@keyframes hintBounce{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(5px);opacity:1}}
+.gate-back{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:502;background:linear-gradient(135deg,var(--yellow),var(--orange));color:#5a2d00;border:none;border-radius:999px;padding:11px 22px;font-weight:800;font-size:13.5px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.3);display:none}
+.gate-back.show{display:block;animation:gateBackUp .3s ease}
+@keyframes gateBackUp{from{transform:translateX(-50%) translateY(20px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
 </style>
 <script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
 <script>
@@ -230,6 +239,7 @@ footer{text-align:center;color:var(--sub);font-size:12px;padding:26px 16px 110px
 <div id="progress"></div>
 
 <!-- ================= 强制解锁门禁（加好友才能浏览） ================= -->
+<div class="gate-backdrop" id="gateBackdrop"></div>
 <div class="gate" id="gate">
   <div class="gate-inner">
     <div class="lock">🔒</div>
@@ -246,17 +256,19 @@ footer{text-align:center;color:var(--sub);font-size:12px;padding:26px 16px 110px
       <b>微信号：<span class="wx-id">ziran_233</span></b>
       <button onclick="copyWx(this)">复制</button>
     </div>
-    <div class="gate-code-row" style="margin-top:14px">
+    <div class="gate-code-row" style="margin-top:12px">
       <input id="gateCode" placeholder="输入专属口令" maxlength="12" onkeydown="if(event.key==='Enter')unlockByCode()">
       <button onclick="unlockByCode()">解锁宝典</button>
     </div>
     <div class="gate-divider">🔑 口令只发给已添加的好友 · 加好友秒通过，资料包同发</div>
   </div>
+  <div class="gate-hint">↓ 向下滚动预览内容 ↓</div>
 </div>
+<button class="gate-back" id="gateBack" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 回到顶部解锁</button>
 <script>
 /* 已解锁用户直接隐藏门禁，避免闪烁 */
-try{ if(localStorage.getItem("ntu_unlocked")==="1"){ var g=document.getElementById("gate"); if(g) g.style.display="none"; }
-else{ document.body.style.overflow="hidden"; } }catch(e){}
+try{ if(localStorage.getItem("ntu_unlocked")==="1"){ var g=document.getElementById("gate"); if(g) g.style.display="none"; var gb=document.getElementById("gateBackdrop"); if(gb) gb.style.display="none"; var bk=document.getElementById("gateBack"); if(bk) bk.style.display="none"; }
+else{ document.body.classList.add("gate-active"); } }catch(e){}
 </script>
 
 <!-- ================= HERO ================= -->
@@ -844,7 +856,12 @@ function unlockGate(){
   try{ localStorage.setItem("ntu_unlocked", "1"); }catch(e){}
   var g = document.getElementById("gate");
   if(g) g.style.display = "none";
+  var gb = document.getElementById("gateBackdrop");
+  if(gb) gb.style.display = "none";
+  document.body.classList.remove("gate-active");
   document.body.style.overflow = "";
+  var back = document.getElementById("gateBack");
+  if(back) back.classList.remove("show");
   toast("已解锁，宝典全部内容畅览～");
 }
 function unlockByCode(){
@@ -907,6 +924,11 @@ window.addEventListener("scroll", function(){
   var h = document.documentElement;
   var p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
   document.getElementById("progress").style.width = p + "%";
+  var back = document.getElementById("gateBack");
+  if(back && document.body.classList.contains("gate-active")){
+    if(window.scrollY > 250) back.classList.add("show");
+    else back.classList.remove("show");
+  }
   var cur = null;
   secs.forEach(function(s){ if(s.el.getBoundingClientRect().top < 120) cur = s; });
   chips.forEach(function(a){ a.classList.remove("active"); });
